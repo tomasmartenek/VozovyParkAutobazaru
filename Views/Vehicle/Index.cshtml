@@ -1,0 +1,205 @@
+﻿@model IEnumerable<VozovyParkAutobazaru.Models.Vehicle>
+
+@{
+    ViewData["Title"] = "Seznam vozidel";
+}
+
+<h1 class="mb-4">Seznam vozidel</h1>
+
+<!-- Filtrovací sekce -->
+<div>
+    <label for="fuelTypeFilter">Typ paliva:</label>
+    <select id="fuelTypeFilter">
+        <option value="All">Vše</option>
+        <option value="Petrol">Benzín</option>
+        <option value="Diesel">Nafta</option>
+        <option value="Alternative">Alternativní</option>
+        
+    </select>
+
+</div>
+
+<table class="table table-striped table-hover">
+    <thead class="thead-dark">
+        <tr>
+            <th>Výrobce</th>
+            <th>Model</th>
+            <th>Rok výroby</th>
+            <th>Počet najetých kilometrů</th>
+            <th>Typ paliva</th>
+            <th>Typ karoserie</th>
+            <th>SPZ</th>
+            <th>Stav vozidla</th>
+            <th>Datum založení evidence</th>
+            <th>Poznámka</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.Manufacturer)</td>
+                <td>@Html.DisplayFor(modelItem => item.Model)</td>
+                <td>@Html.DisplayFor(modelItem => item.YearOfManufacture)</td>
+                <td>@Html.DisplayFor(modelItem => item.OdometerReading) Km</td>
+                <td>
+                    @switch (item.FuelType)
+                    {
+                        case "Petrol":
+                            @:Benzín
+                            break;
+                        case "Diesel":
+                            @:Diesel
+                            break;
+                        default:
+                            @Html.DisplayFor(modelItem => item.FuelType)
+                            break;
+                    }
+                </td>
+                <td>@Html.DisplayFor(modelItem => item.BodyType)</td>
+                <td>@Html.DisplayFor(modelItem => item.LicensePlate)</td>
+                <td>@Html.DisplayFor(modelItem => item.Condition)</td>
+                <td>@Html.DisplayFor(modelItem => item.InBazaarSince)</td>
+                <td>@Html.DisplayFor(modelItem => item.Note)</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Editovat</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Detaily</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Smazat</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="mt-3">
+    <a asp-action="Create" class="btn btn-success text-white">Přidat nové vozidlo</a>
+    <a asp-action="Statistics" class="btn btn-primary">Statistiky</a>
+</div>
+
+<style>
+    .btn:hover {
+        opacity: 0.8;
+    }
+</style>
+
+
+
+
+
+
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function () {
+            $('#fuelTypeFilter').change(function () {
+                var fuelType = $(this).val();
+
+                $.ajax({
+                    url: '@Url.Action("FilterVehicles", "Vehicle")',
+                    type: 'GET',
+                    dataType: 'json',
+                    data: { fuelType: fuelType },
+                    success: function (data) {
+                        // Aktualizace tabulky vozidel s novými daty
+                    }
+                });
+            });
+        });
+    </script>
+}
+
+
+
+
+<script src=https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js></script>
+
+<script>
+    var VehicleModule = (function () {
+
+        function loadVehicles(fuelType) {
+            $.ajax({
+                url: '/Vehicle/FilterVehicles',  // This should be the endpoint that returns a list of vehicles filtered by fuel type
+                type: 'GET',
+                data: { fuelType: fuelType },
+                dataType: 'json',
+                success: function (data) {
+                    // Update the table with the new data
+                    updateTable(data);
+                    toastr.success('Seznam vozidel byl aktualizován.');
+                },
+                error: function (error) {
+                    toastr.error('Nastala chyba při načítání dat.');
+                }
+            });
+        }
+
+        function updateTable(data) {
+            var tableBody = $('table tbody');
+            tableBody.empty();  // Clear the existing rows
+
+            // Populate the table with new rows based on the data
+            data.forEach(function (vehicle) {
+                var fuelTypeDisplay;
+                switch (vehicle.FuelType) {
+                    case "Petrol":
+                        fuelTypeDisplay = "Benzín";
+                        break;
+                    case "Diesel":
+                        fuelTypeDisplay = "Diesel";
+                        break;
+                    default:
+                        fuelTypeDisplay = vehicle.FuelType;
+                        break;
+                }
+
+                var row = `<tr>
+                <td>${vehicle.Manufacturer}</td>
+                <td>${vehicle.Model}</td>
+                <td>${vehicle.YearOfManufacture}</td>
+                <td>${vehicle.OdometerReading} Km</td>
+                <td>${fuelTypeDisplay}</td>
+                <td>${vehicle.BodyType}</td>
+                <td>${vehicle.LicensePlate}</td>
+                <td>${vehicle.Condition}</td>
+                <td>${vehicle.InBazaarSince}</td>
+                <td>${vehicle.Note}</td>
+                <td>
+                    <a href="/Vehicle/Edit/${vehicle.Id}">Editovat</a> |
+                    <a href="/Vehicle/Details/${vehicle.Id}">Detaily</a> |
+                    <a href="/Vehicle/Delete/${vehicle.Id}">Smazat</a>
+                </td>
+            </tr>`;
+                tableBody.append(row);
+            });
+        }
+
+        }
+
+        function translateFuelType(fuelType) {
+            switch (fuelType) {
+                case "Petrol":
+                    return "Benzín";
+                case "Diesel":
+                    return "Diesel";
+                default:
+                    return fuelType;
+            }
+        }
+
+
+        // Handle the change event of the fuel type dropdown
+        $('#fuelTypeFilter').change(function () {
+            var selectedFuelType = $(this).val();
+            loadVehicles(selectedFuelType);
+        });
+
+        return {
+            loadVehicles: loadVehicles
+        };
+
+    })();
+</script>
+
+

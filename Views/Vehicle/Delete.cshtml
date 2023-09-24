@@ -1,0 +1,21 @@
+﻿@model VozovyParkAutobazaru.Models.Vehicle
+
+@{
+    ViewData["Title"] = "Delete Vehicle";
+}
+
+<div class="container mt-5">
+    <h2>Opravdu si přejete vymazat tuto položku?</h2>
+    <hr>
+    <div class="mb-4">
+        <strong>Výrobce:</strong> @Model.Manufacturer <br>
+        <strong>Model:</strong> @Model.Model <br>
+        <strong>RZ:</strong> @Model.LicensePlate <br>
+        <!-- Dle potřeby se mohou přidat další údaje -->
+    </div>
+
+    <form asp-action="Delete" asp-controller="Vehicle" asp-route-id="@Model.Id" method="post">
+        <button type="submit" class="btn btn-danger">Ano</button>
+        <a asp-action="Index" class="btn btn-secondary">Ne</a>
+    </form>
+</div>

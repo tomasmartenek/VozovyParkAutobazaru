@@ -1,0 +1,129 @@
+﻿@model VozovyParkAutobazaru.Models.VehicleViewModel
+
+
+@{
+    ViewData["Title"] = "Přidat vozidlo";
+}
+
+<!-- Link to jQuery and toastr libraries -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
+<div class="container d-flex flex-column justify-content-center" style="min-height: calc(100vh - 150px);">
+    <h2 class="text-center mb-5">@ViewData["Title"]</h2>
+
+    @if (ViewData.ModelState["LicensePlate"]?.Errors.Count > 0)
+    {
+        <div class="alert alert-danger">
+            @ViewData.ModelState["LicensePlate"].Errors[0].ErrorMessage
+        </div>
+    }
+
+    <form id="vehicleForm">
+
+    <form asp-action="Create">
+        <div class="form-group">
+            <label asp-for="Manufacturer" class="control-label">Výrobce</label>
+            <input asp-for="Manufacturer" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label asp-for="Model" class="control-label">Model</label>
+            <input asp-for="Model" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label asp-for="YearOfManufacture" class="control-label">Rok výroby</label>
+            <input asp-for="YearOfManufacture" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label asp-for="OdometerReading" class="control-label">Stav tachometru</label>
+            <input asp-for="OdometerReading" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label asp-for="FuelType" class="control-label">Typ paliva</label>
+            <select asp-for="FuelType" class="form-control">
+                <option value="Benzin">Benzín</option>
+                <option value="Nafta">Nafta</option>
+                <option value="Alternativní">Alternativní</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label asp-for="BodyType" class="control-label">Karoserie</label>
+            <select asp-for="BodyType" class="form-control">
+                <option value="Sedan">Sedan</option>
+                <option value="Hatchback">Hatchback</option>
+                <option value="Kombi">Kombi</option>
+                <option value="SUV">SUV</option>
+                <option value="Kabriolet">Kabriolet</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label asp-for="LicensePlate" class="control-label">Registrační Značka</label>
+            <input asp-for="LicensePlate" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label asp-for="Condition" class="control-label">Stav vozidla</label>
+            <select asp-for="Condition" class="form-control">
+                <option value="Výborný">Výborný</option>
+                <option value="Dobrý">Dobrý</option>
+                <option value="Značně opotřebený">Značně opotřebený</option>
+                <option value="Špatný">Špatný</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label asp-for="InBazaarSince" class="control-label">V bazaru veden od:</label>
+            <input asp-for="InBazaarSince" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label asp-for="Note" class="control-label">Poznámka</label>
+            <textarea asp-for="Note" class="form-control"></textarea>
+        </div>
+    </form>
+
+        <div class="form-group text-center mt-4">
+            <button type="button" id="submitForm" class="btn btn-primary">Přidat</button>
+        </div>
+    </form>
+
+    <div class="text-center mt-4">
+        <a asp-action="Index">Zpět na seznam vozidel</a>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $("#LicensePlate").blur(function () {
+            var licensePlate = $(this).val();
+            $.get('/Vehicle/IsLicensePlateAvailable', { licensePlate: licensePlate }, function (response) {
+                if (!response) {
+                    alert("SPZ již existuje, zadejte jiný údaj.");
+                }
+            });
+        });
+
+        $("#submitForm").click(function () {
+            // Validate form
+            let isValid = true;
+            $("form#vehicleForm input, form#vehicleForm select").each(function () {
+                if ($(this).prop('required') && !$(this).val()) {
+                    $(this).addClass('is-invalid');
+                    isValid = false;
+                    toastr.error("Toto pole musí být vyplněné");
+                } else {
+                    $(this).removeClass('is-invalid');
+                }
+            });
+
+            if (isValid) {
+                $.post("/Vehicle/Create", $("#vehicleForm").serialize(), function (response) {
+                    if (response.success) {
+                        toastr.success("Vozidlo bylo úspěšně přidáno");
+                        window.location.href = "/Vehicle/Index";
+                    } else {
+                        toastr.error(response.errorMessage);
+                    }
+                });
+            }
+        });
+    });
+</script>

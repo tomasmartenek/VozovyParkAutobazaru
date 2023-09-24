@@ -1,0 +1,60 @@
+﻿@model VozovyParkAutobazaru.Models.Vehicle
+
+@{
+    ViewData["Title"] = "Detaily vozidla";
+}
+
+<div class="container d-flex flex-column justify-content-center" style="min-height: calc(100vh - 150px);">
+    <h1 class="text-center mb-5">Detaily vozidla</h1>
+
+    <div class="card mb-5 mx-auto" style="max-width: 600px;">
+        <div class="card-body">
+            <h5 class="card-title">@Html.DisplayFor(model => model.Manufacturer) @Html.DisplayFor(model => model.Model)</h5>
+
+            <p><strong>Rok výroby:</strong> @Html.DisplayFor(model => model.YearOfManufacture)</p>
+            <p><strong>Stav tachometru:</strong> @Html.DisplayFor(model => model.OdometerReading) Km</p>
+            <p>
+                <strong>Typ paliva:</strong>
+                @switch (Model.FuelType)
+                {
+                    case "Petrol":
+                        @:Benzín
+                        break;
+                    case "Diesel":
+                        @:Diesel
+                        break;
+                    case "Alternative":
+                        @:Alternativní
+                        break;
+                }
+            </p>
+            <p><strong>Typ karoserie:</strong> @Html.DisplayFor(model => model.BodyType)</p>
+            <p><strong>SPZ:</strong> @Html.DisplayFor(model => model.LicensePlate)</p>
+            <p>
+                <strong>Stav vozidla:</strong>
+                @switch (Model.Condition)
+                {
+                    case "Excellent":
+                        @:Výborný
+                        break;
+                    case "Good":
+                        @:Dobrý
+                        break;
+                    case "Fair":
+                        @:Značně opotřebené
+                        break;
+                    case "Poor":
+                        @:Špatné
+                        break;
+                }
+            </p>
+            <p><strong>V evidenci bazaru od:</strong> @Html.DisplayFor(model => model.InBazaarSince)</p>
+            <p><strong>Poznámka:</strong> @Html.DisplayFor(model => model.Note)</p>
+        </div>
+    </div>
+
+    <div class="text-center mb-5">
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Upravit</a>
+        <a asp-action="Index" class="btn btn-primary">Zpět na seznam</a>
+    </div>
+</div>

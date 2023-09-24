@@ -1,0 +1,113 @@
+﻿@{
+    ViewData["Title"] = "Vehicle Statistics";
+}
+
+<div class="container d-flex flex-column justify-content-center" style="min-height: calc(100vh - 150px);">
+    <h1 class="text-center mb-5">Statistiky</h1>
+
+    <div class="row mb-5">
+        <!-- Vozidel celkem -->
+        <div class="col-md-3 mb-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Vozidel celkem</h5>
+                    <p class="card-text">@ViewBag.TotalVehicles</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Vozidla s více než 100 000 Km najetými Km -->
+        <div class="col-md-3 mb-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Vozidla s více než 100 000 Km</h5>
+                    <p class="card-text">@ViewBag.VehiclesOver100k</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Benzínová vozidla -->
+        <div class="col-md-3 mb-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Benzínová vozidla</h5>
+                    <p class="card-text">@ViewBag.PetrolVehicles</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dieslová vozidla -->
+        <div class="col-md-3 mb-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Dieslová vozidla</h5>
+                    <p class="card-text">@ViewBag.DieselVehicles</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Alternativní vozidla -->
+        <div class="col-md-3 mb-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Alternativní vozidla</h5>
+                    <p class="card-text">@ViewBag.AlternativeVehicles</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stav Výborný -->
+        <div class="col-md-3 mb-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Stav Výborný</h5>
+                    <p class="card-text">@ViewBag.ExcellentConditionVehicles</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stav Dobrý -->
+        <div class="col-md-3 mb-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Stav Dobrý</h5>
+                    <p class="card-text">@ViewBag.GoodConditionVehicles</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stav Značně opotřebený -->
+        <div class="col-md-3 mb-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Stav Značně opotřebený</h5>
+                    <p class="card-text">@ViewBag.VeryWornConditionVehicles</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stav Špatný -->
+        <div class="col-md-3 mb-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Stav Špatný</h5>
+                    <p class="card-text">@ViewBag.PoorConditionVehicles</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Vozidla do 100 000 Km najeto -->
+        <div class="col-md-3 mb-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Vozidla do 100 000 Km najeto</h5>
+                    <p class="card-text">@ViewBag.VehiclesUnder100k</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="text-center mb-5">
+        <a asp-action="Index" class="btn btn-primary">Zpět na seznam</a>
+    </div>
+</div>

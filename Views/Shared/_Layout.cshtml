@@ -1,0 +1,68 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Vozový Park Autobazaru</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/site.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+</head>
+
+<body class="d-flex flex-column min-vh-100">
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: var(--secondary-color); padding: 0.25rem 1rem;">
+            <div class="container">
+                <a class="navbar-brand" href="@Url.Action("Index", "Home")">Vozový Park Autobazaru</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="@Url.Action("Index", "Home")">Domů</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="@Url.Action("Index", "Vehicle")">Seznam vozidel</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="@Url.Action("Create", "Vehicle")">Přidat vozidlo</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="@Url.Action("Statistics", "Vehicle")">Statistiky</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="About">O nás</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main role="main" class="container my-auto d-flex flex-column justify-content-center">
+        @RenderBody()
+    </main>
+
+    <footer class="text-center py-2" style="background-color: var(--primary-color);">
+        <div class="container py-1">
+            <p class="mb-1">&copy; 2023 Vozový Park Autobazaru. Všechna práva vyhrazena.</p>
+            <p class="mb-1"><a href="mailto:info@autobazar.cz" style="color: var(--secondary-color);">info@autobazar.cz</a></p>
+            <p class="mb-2"><a href="tel:+420123456789" style="color: var(--secondary-color);">+420 123 456 789</a></p>
+            <p>
+                <a href="https://www.facebook.com/autobazar" target="_blank" style="color: var(--secondary-color);"><i class="fab fa-facebook-square fa-2x"></i></a>
+                <a href="https://www.twitter.com/autobazar" target="_blank" style="color: var(--secondary-color);"><i class="fab fa-twitter-square fa-2x"></i></a>
+                <a href="https://www.instagram.com/autobazar" target="_blank" style="color: var(--secondary-color);"><i class="fab fa-instagram-square fa-2x"></i></a>
+            </p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+
+</html>
